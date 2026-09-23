@@ -1,364 +1,405 @@
-CoinTrace
-
-AI-Powered Cryptocurrency Transaction Risk Analysis
+COINTRACE — AI-POWERED CRYPTOCURRENCY TRANSACTION RISK ANALYSIS
 
 Smart India Hackathon 2026 — Problem Statement 26146
 
-CoinTrace is an AI-powered cryptocurrency transaction risk analysis platform designed to identify suspicious transaction patterns, classify transaction risk, and generate explainable priority alerts through an interactive investigation dashboard.
 
-The system combines machine learning, transaction feature engineering, risk analysis, and explainable alerts into a single web-based platform.
-
-Live Demo
+LIVE DEMO
 
 https://cointrace-hazel.vercel.app/
 
-Problem
 
-Cryptocurrency transactions generate large volumes of data that can be difficult to manually investigate.
+PROBLEM
 
-Traditional investigation workflows may require analysts to:
-1-Examine large transaction datasets
+Cryptocurrency transactions can generate large volumes of data that are difficult to investigate manually.
 
-2-Identify unusual transaction behaviour
+Investigators may need to:
 
-3-Detect suspicious entities and patterns
+• Analyze large transaction datasets
+• Identify unusual transaction behaviour
+• Detect suspicious transaction patterns
+• Prioritize potentially high-risk activity
+• Understand the signals behind a detected anomaly
 
-4-Prioritize high-risk transactions
+CoinTrace provides an automated analysis workflow that helps transform raw transaction data into investigation-oriented insights.
 
-5-Understand why a transaction was flagged
-CoinTrace addresses this challenge by providing an automated risk-analysis workflow that helps investigators focus on transactions requiring greater attention.
 
-Solution
+SOLUTION
 
-CoinTrace processes transaction data through a machine-learning pipeline and converts raw transaction information into actionable investigation insights.
+CoinTrace accepts transaction data in CSV format and processes it through a machine-learning pipeline.
 
-Core Workflow
+The system performs:
+
+• Data parsing and validation
+• Transaction feature engineering
+• Machine-learning based anomaly detection
+• Anomaly score generation
+• Risk severity classification
+• Priority alert generation
+• Explainable analysis
+• Interactive dashboard visualization
+
+
+CORE WORKFLOW
 
 Transaction CSV
        ↓
-Data Validation
+JSON Records
        ↓
 Feature Engineering
        ↓
-Machine Learning Model
+Isolation Forest
        ↓
-Anomaly Detection
+Anomaly Score
        ↓
-Risk Classification
+Risk Severity
        ↓
-Priority Alerts
+Explanation
        ↓
-Explainable Investigation Dashboard
+Investigation Dashboard
 
-Machine Learning
 
-CoinTrace uses an unsupervised anomaly-detection approach based on Isolation Forest.
+MACHINE LEARNING
 
-Model Configuration
+CoinTrace uses an unsupervised anomaly-detection model based on Scikit-learn's Isolation Forest.
+
+MODEL CONFIGURATION
 
 Model: sklearn.ensemble.IsolationForest
-Trees: 200
+Isolation Trees: 200
 Random State: 26146
 Contamination: 0.16
 
-The model analyzes transaction and network/entity characteristics to identify behaviour that deviates from normal transaction patterns.
+The model analyzes transaction and network/entity characteristics to identify behaviour that differs from the learned reference distribution.
 
-Feature Independence
+FEATURE INDEPENDENCE
 
-The ML model does not use the following fields as input features
-1-risk_score
+The following fields are not provided to the machine-learning model as input features:
 
-2-risk_level
+• risk_score
+• risk_level
+• ground_truth
+• Synthetic pattern labels
 
-3-Ground-truth labels
+This prevents the model from directly learning predefined risk labels instead of detecting behavioural anomalies.
 
-4-Synthetic pattern labels
-This prevents the model from simply learning predefined risk categories instead of detecting anomalous behaviour.
 
-Feature Engineering
+FEATURE ENGINEERING
 
-The system extracts transaction and entity-level signals from the input dataset.
+CoinTrace derives transaction, network, and entity-level signals from the input data.
 
-Example feature categories include:
-1-Transaction amount
+The ML pipeline uses 11 engineered transaction/network/entity features.
 
-2-Transaction frequency
+These features are used by the Isolation Forest model to identify unusual behavioural patterns.
 
-3-Incoming/outgoing behaviour
+The feature-engineering layer converts raw transaction records into the numerical representation required by the anomaly-detection model.
 
-4-Entity activity
 
-5-Network characteristics
+RISK ANALYSIS
 
-6-Transaction velocity
+After ML inference, CoinTrace converts anomaly information into investigation-oriented results.
 
-7-Behavioural patterns
+PRIORITY ALERTS
 
-8-Counterparty-related signals
+Highlights transactions requiring attention and allows investigators to focus on potentially suspicious activity.
 
-These engineered features are supplied to the Isolation Forest model for anomaly detection.
+RISK CLASSIFICATION
 
-Risk Analysis
+Transactions are classified into risk-severity categories such as:
 
-Priority Alerts
+• High Risk
+• Medium Risk
+• Low Risk
 
-Highlights transactions requiring attention and helps investigators focus on higher-risk activity first.
+EXPLAINABLE ANALYSIS
 
-Risk Classification
+CoinTrace provides contextual explanations associated with detected signals instead of displaying only a numerical model output.
 
-Transactions are categorized into different risk levels such as:
+This makes the results easier to interpret during investigation.
 
-1-High Risk
 
-2-Medium Risk
+INVESTIGATION DASHBOARD
 
-3-Low Risk
+The dashboard provides an interactive view of the analyzed transaction dataset.
 
-Explainable Analysis
+Key areas include:
 
-Instead of showing only a numerical prediction, CoinTrace provides contextual explanations describing the signals associated with a suspicious transaction.
+• Transaction overview
+• Risk distribution
+• Priority alerts
+• Detection signals
+• Explainable analysis
+• Transaction-level information
+• Interactive visualizations
+• Investigation-oriented summaries
 
-Investigation Dashboard
+The objective is to turn raw transaction records into a more accessible investigation interface.
 
-CoinTrace provides an interactive dashboard containing:
 
-1-Transaction overview
+SYSTEM ARCHITECTURE
 
-2-Risk distribution
+                         ┌──────────────────────┐
+                         │   Transaction CSV    │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │   JSON Records       │
+                         │   & Validation       │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Feature Engineering  │
+                         │ 11 ML Features       │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │   Isolation Forest   │
+                         │    200 Trees         │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │    Anomaly Score     │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Risk Severity &      │
+                         │ Explainable Signals  │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Investigation        │
+                         │ Dashboard            │
+                         └──────────────────────┘
 
-3-Priority alerts
 
-4-Detection signals
+TECHNOLOGY STACK
 
-5-Explainable analysis
+FRONTEND
 
-6-Transaction-level information
+• HTML5
+• CSS3
+• JavaScript
+• Interactive dashboard interface
+• Data visualization
 
-7-Visual analytics
+BACKEND
 
-8-Investigation-oriented summaries
+• Python
+• FastAPI
 
-The goal is to convert raw transaction records into an interface that can be understood quickly by an investigator.
+MACHINE LEARNING
 
-System Architecture
+• Scikit-learn
+• Isolation Forest
+• Feature engineering
+• Unsupervised anomaly detection
 
-                    ┌─────────────────────┐
-                    │   Transaction CSV   │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Data Validation &   │
-                    │ Feature Engineering │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │  Isolation Forest   │
-                    │   ML Anomaly Model  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Anomaly Score &     │
-                    │ Risk Classification │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Priority Alerts &   │
-                    │ Explainable Signals │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Investigation       │
-                    │ Dashboard           │
-                    └─────────────────────┘
+DATA
 
-Technology Stack
+• CSV transaction data
+• Synthetic CoinTrace reference dataset
 
-Frontend
+DEPLOYMENT
 
-•HTML5
+• Vercel
+• Python Functions
+• FastAPI
 
-•CSS3
 
-•JavaScript
-
-•Interactive dashboard components
-
-•Data visualization
-
-Backend
-
-•Python
-
-•FastAPI
-
-•Machine Learning
-
-•Scikit-learn
-
-•Isolation Forest
-
-•Feature engineering
-
-•Anomaly detection
-
-Data
-
-•CSV-based transaction datasets
-
-•Synthetic risk-aware reference dataset
-
-Deployment
-
-•Vercel
-
-•Python Serverless Functions
-
-Project Structure
+PROJECT STRUCTURE
 
 Cointrace/
 │
-├── analyze.py
+├── api/
+│   └── analyze.py
+│
 ├── index.html
 ├── all.js
 ├── cointrace_sih26146_risk_aware_dataset.csv
 ├── requirements.txt
 ├── vercel.json
-├── README.md
-└── .gitignore
+└── README.md
 
-Local Setup
 
-1. Clone the Repository
+BACKEND API
+
+The machine-learning inference service is implemented using FastAPI.
+
+ENDPOINT
+
+POST /api/analyze
+
+The endpoint receives transaction data, performs feature engineering and ML inference, and returns the analysis results used by the frontend dashboard.
+
+The frontend communicates with the API using the same-origin /api/analyze route.
+
+Because the frontend and Python service are deployed as part of the same Vercel project, a separate backend URL or CORS configuration is not required for the deployed application.
+
+
+LOCAL SETUP
+
+1. CLONE THE REPOSITORY
 
 git clone https://github.com/realanshdev/Cointrace.git
 cd Cointrace
 
-2. Install Python Dependencies
+
+2. INSTALL DEPENDENCIES
 
 python -m pip install -r requirements.txt
 
-3. Run Using Vercel CLI
+
+3. RUN LOCALLY WITH VERCEL
 
 vercel dev
 
-The frontend communicates with the Python ML analysis service through:
+After the development server starts, open the local Vercel URL in your browser.
 
-/api/analyze
+Do not open index.html directly because the dashboard requires the Python ML API.
 
-Do not open index.html directly because the ML analysis requires the backend service.
 
-Dataset
+DATASET
 
-CoinTrace includes a synthetic risk-aware transaction dataset for demonstration and testing.
+CoinTrace includes a synthetic risk-aware reference dataset for demonstration and testing.
 
-The dataset is designed to contain different transaction behaviours and risk patterns that allow the ML pipeline and dashboard to be demonstrated without depending on external blockchain APIs.
+The dataset is used by the Python ML service during startup to train the Isolation Forest model.
 
-Dataset Workflow
+The system can also analyze uploaded transaction CSV files through the dashboard.
 
-CSV
- ↓
-Validation
- ↓
-Feature Extraction
- ↓
-ML Inference
- ↓
+DATASET PROCESSING
+
+CSV Dataset
+     ↓
+Record Parsing
+     ↓
+Feature Engineering
+     ↓
+Isolation Forest
+     ↓
+Anomaly Detection
+     ↓
 Risk Analysis
- ↓
+     ↓
 Dashboard
 
-Privacy and Security
+
+OFFLINE AND SIH DEMONSTRATION
+
+The machine-learning model and feature-engineering pipeline execute inside the Python runtime.
+
+The core analysis does not require:
+
+• Blockchain APIs
+• Cloud AI services
+• External transaction lookup services
+• Cryptocurrency wallet credentials
+• Private keys
+
+The included synthetic dataset allows the complete ML workflow to be demonstrated without requiring live blockchain data.
+
+Vercel deployment provides the web-based demonstration, while the same FastAPI application can be run locally for an offline demonstration.
+
+
+PRIVACY AND SECURITY
 
 CoinTrace is designed as an analysis and investigation prototype.
 
-The system:
+The application does not require:
 
-Does not require cryptocurrency wallet credentials
+• Cryptocurrency wallet credentials
+• Private keys
+• Exchange login credentials
+• Blockchain wallet access
 
-Does not require private keys
+The bundled dataset is synthetic and intended for demonstration purposes.
 
-Does not require exchange login credentials
 
-Does not require blockchain wallet access
+DEPLOYMENT
 
-Does not require external transaction lookup services for the bundled demonstration dataset
+CoinTrace is designed to run as a single Vercel project.
 
-The included dataset is synthetic and intended for demonstration purposes.
+                  CoinTrace
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+          ▼                       ▼
+   Static Frontend          Python API
+   HTML/CSS/JS             FastAPI
+                                  │
+                                  ▼
+                         Machine Learning
+                         Isolation Forest
 
-Deployment
-
-CoinTrace can be deployed as a single Vercel project containing:
-
-Frontend
-   +
-Python ML Analysis Service
-   +
-Machine Learning Pipeline
-
-The frontend communicates with the ML analysis service through:
+The frontend communicates with:
 
 /api/analyze
 
-This allows the frontend and backend functionality to be deployed as part of the same project.
+This same-origin architecture keeps the frontend and ML service within the same deployed application.
 
-Limitations
+
+LIMITATIONS
 
 CoinTrace is currently a Smart India Hackathon prototype.
 
-The current implementation primarily demonstrates the machine-learning and investigation workflow using synthetic/reference transaction data.
+The current implementation demonstrates the machine-learning and investigation workflow using a synthetic reference dataset and uploaded transaction data.
 
-For a production-grade deployment, the system could be extended with:
+For a production-grade deployment, the platform could be extended with:
 
-Live blockchain data ingestion
+• Live blockchain data ingestion
+• Blockchain node or indexer integration
+• Graph-based transaction analysis
+• Entity clustering
+• Wallet and address intelligence
+• Historical behavioural profiling
+• Continuous model monitoring
+• Automated model retraining
+• Investigator authentication
+• Case management
+• Audit logging
+• Large-scale distributed processing
 
-Blockchain node/indexer integration
 
-Graph-based transaction analysis
+FUTURE SCOPE
 
-Entity clustering
-
-Wallet/address intelligence
-
-Historical behavioural profiling
-
-Model monitoring and retraining
-
-Role-based investigator access
-
-Case management
-
-Audit logging
-
-Large-scale distributed processing
-
-Future Scope
-
-1. Real-Time Blockchain Monitoring
+REAL-TIME BLOCKCHAIN MONITORING
 
 Integrate blockchain data sources to continuously monitor new transactions.
 
-2. Graph-Based Investigation
+GRAPH-BASED INVESTIGATION
 
 Represent transactions and entities as graphs to identify complex money-flow relationships.
 
-3. Advanced ML Models
+ADVANCED MACHINE LEARNING
 
-Explore additional approaches such as autoencoders, graph neural networks, clustering, temporal anomaly detection, and ensemble models.
+Explore additional approaches such as:
 
-4. Investigator Collaboration
+• Autoencoders
+• Graph Neural Networks
+• Clustering
+• Temporal anomaly detection
+• Ensemble anomaly-detection models
 
-Add case creation, evidence management, investigator notes, audit trails, and report generation.
+INVESTIGATOR COLLABORATION
 
-5. Scalable Architecture
+Future versions can include:
 
-Move from prototype-scale processing toward distributed transaction analysis capable of handling significantly larger datasets.
+• Case creation
+• Evidence management
+• Investigator notes
+• Audit trails
+• Report generation
 
-SIH Context
+SCALABLE ARCHITECTURE
+
+The system can be extended from prototype-scale processing to distributed transaction analysis capable of handling significantly larger datasets.
+
+
+SIH CONTEXT
 
 Event: Smart India Hackathon 2026
 
@@ -368,14 +409,16 @@ Project: CoinTrace
 
 CoinTrace demonstrates how machine learning and explainable analytics can be combined to assist cryptocurrency transaction investigation and risk prioritization.
 
-Author
+
+AUTHOR
 
 Ansh Shukla
 
 Built for Smart India Hackathon 2026.
 
-Disclaimer
+
+DISCLAIMER
 
 CoinTrace is an educational and hackathon prototype.
 
-Risk classifications and anomaly scores generated by the system should be treated as investigation-support signals, not as definitive evidence of financial crime or malicious activity.
+Risk classifications and anomaly scores generated by the system should be treated as investigation-support signals and not as definitive evidence of financial crime or malicious activity.
